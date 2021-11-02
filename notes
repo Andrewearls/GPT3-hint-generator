@@ -1,0 +1,17 @@
+Sail Docs:
+https://laravel.com/docs/8.x/sail#executing-composer-commands
+
+
+Start Sail:
+	sail up
+
+	Error: 
+		port 80 in use
+	Solution: 
+		sudo service apache2 stop
+
+Stop Sail:
+	sail stop
+
+Sail commands:
+	sail [command]

@@ -10004,3 +10004,12 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.no-gutters > .col,
+.no-gutters > [class*=col-] {
+  padding-right: 0;
+  padding-left: 0;
+}
