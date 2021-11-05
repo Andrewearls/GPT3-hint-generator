@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,8 @@ Route::get('/', function () {
     return view('guest');
 });
 
+Route::post('/message-gpt', [Controllers\MessagingController::class, 'messageGPT'])->name('messageGPT');
+
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [Controllers\HomeController::class, 'index'])->name('home');

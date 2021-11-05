@@ -14,8 +14,8 @@
 								</div>
 							</div>
 							<div class="form-group row justify-content-center">
-								<input class="form-control col-md-9" type="text" name="client-message">
-								<button class="btn btn-primary mb-2 col-md-2" type="submit">Send</button>
+								<input class="form-control col-md-9" type="text" name="client-message" id="userInput">
+								<button class="btn btn-primary mb-2 col-md-2" type="button" v-on:click="sendMessage">Send</button>
 							</div>
 							
 						</form>
@@ -27,15 +27,43 @@
 </template>
 
 <script>
+
+    // Default Vue scripts
 	export default {
+		props: {
+			posturl: String
+		},
+		data() {
+			return {
+			}
+		},
 		mounted() {
-			console.log('Messaging Component Mounted')
+			axios
+				.get('#')
+				.then(console.log('axios seems to work'))
+		},
+		methods: {
+			sendMessage: function () {
+				var inputVal = document.getElementById('userInput').value;
+
+				axios
+					.post(this.posturl,{
+						message: inputVal
+					})
+					.then(function (response) {
+						console.log(response);
+					})
+					.catch(function (error) {
+						console.log('message error: ' + error);
+					})
+			}
 		}
+		
 	}
+
 </script>
 
 <style lang="scss">
-
 
 #conversationBox {
 	height: 25vh;
