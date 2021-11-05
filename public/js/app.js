@@ -2163,8 +2163,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    content: String
+  },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    console.log('Sent Message Component mounted.');
   }
 });
 
@@ -2209,24 +2212,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // Default Vue scripts
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     posturl: String
   },
   data: function data() {
-    return {};
+    return {
+      newMessageText: '',
+      messages: [],
+      nextMessageId: 1
+    };
   },
-  mounted: function mounted() {
-    axios.get('#').then(console.log('axios seems to work'));
-  },
+  mounted: function mounted() {},
   methods: {
-    sendMessage: function sendMessage() {
-      var inputVal = document.getElementById('userInput').value;
+    messageSent: function messageSent() {
+      this.messages.push({
+        id: this.nextMessageId++,
+        content: this.newMessageText
+      });
+      this.newMessageText = '';
+    },
+    messageSend: function messageSend() {
+      var input = document.getElementById('userInput');
+      var self = this;
       axios.post(this.posturl, {
-        message: inputVal
+        message: input.value
       }).then(function (response) {
         console.log(response);
+        self.messageSent();
       })["catch"](function (error) {
         console.log('message error: ' + error);
       });
@@ -6783,7 +6810,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#conversationBox {\n  height: 25vh;\n  overflow-y: scroll;\n}\n#conversationBox .received div {\n  background-color: lightblue;\n}\n#conversationBox .sending, #conversationBox .sent {\n  margin-right: 0px;\n}\n#conversationBox .sending div {\n  background-color: lightgray;\n}\n#conversationBox .sent div {\n  background-color: lightgreen;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "#conversationBox {\n  height: 25vh;\n  overflow-y: scroll;\n}\n#conversationBox .received div {\n  background-color: lightblue;\n}\n#conversationBox .sending, #conversationBox .sent {\n  margin-right: 0px;\n  margin-top: 2px;\n}\n#conversationBox .sending div {\n  background-color: lightgray;\n}\n#conversationBox .sent div {\n  background-color: lightgreen;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -44782,20 +44809,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row sent justify-content-end " }, [
-      _c("div", { staticClass: "col-auto float-right text-right rounded" }, [
-        _vm._v("\n\t\tsent\n\t")
-      ])
+  return _c("div", { staticClass: "row sent justify-content-end " }, [
+    _c("div", { staticClass: "col-auto float-right text-right rounded" }, [
+      _vm._v("\n\t\t" + _vm._s(_vm.content) + "\n\t")
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -44823,57 +44843,82 @@ var render = function() {
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-body" }, [
-            _c("form", [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "form-group row justify-content-center no-gutters"
-                },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "col-md-11 border rounded g-0",
-                      attrs: { id: "conversationBox" }
-                    },
-                    [
-                      _c("message-recieved"),
-                      _vm._v(" "),
-                      _c("message-sent"),
-                      _vm._v(" "),
-                      _c("message-sending")
-                    ],
-                    1
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "form-group row justify-content-center" },
-                [
-                  _c("input", {
-                    staticClass: "form-control col-md-9",
-                    attrs: {
-                      type: "text",
-                      name: "client-message",
-                      id: "userInput"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary mb-2 col-md-2",
-                      attrs: { type: "button" },
-                      on: { click: _vm.sendMessage }
-                    },
-                    [_vm._v("Send")]
-                  )
-                ]
-              )
-            ])
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.messageSend.apply(null, arguments)
+                  }
+                }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "form-group row justify-content-center no-gutters"
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-md-11 border rounded g-0",
+                        attrs: { id: "conversationBox" }
+                      },
+                      _vm._l(_vm.messages, function(message) {
+                        return _c("message-sent", {
+                          key: message.id,
+                          tag: "div",
+                          attrs: { content: message.content },
+                          on: {
+                            remove: function($event) {
+                              return _vm.todos.splice(_vm.index, 1)
+                            }
+                          }
+                        })
+                      }),
+                      1
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form-group row justify-content-center" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newMessageText,
+                          expression: "newMessageText"
+                        }
+                      ],
+                      staticClass: "form-control col-md-9",
+                      attrs: { type: "text", id: "userInput" },
+                      domProps: { value: _vm.newMessageText },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.newMessageText = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      { staticClass: "btn btn-primary mb-2 col-md-2" },
+                      [_vm._v("Send")]
+                    )
+                  ]
+                )
+              ]
+            )
           ])
         ])
       ])

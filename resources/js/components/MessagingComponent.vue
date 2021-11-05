@@ -4,18 +4,31 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-body">
-						<form>
+						<form v-on:submit.prevent="messageSend">
 							<div class="form-group row justify-content-center no-gutters">
 								<div class="col-md-11 border rounded g-0" id="conversationBox">
-									<message-recieved></message-recieved>
+<!-- 									<message-recieved></message-recieved>
 									<message-sent></message-sent>
-									<message-sending></message-sending>
+									<message-sending></message-sending> -->
+									<div
+										is="message-sent"
+										v-for="message in messages"
+										v-bind:key="message.id"
+										v-bind:content="message.content"
+										v-on:remove="todos.splice(index,1)"
+									></div>
+									
 									
 								</div>
 							</div>
 							<div class="form-group row justify-content-center">
-								<input class="form-control col-md-9" type="text" name="client-message" id="userInput">
-								<button class="btn btn-primary mb-2 col-md-2" type="button" v-on:click="sendMessage">Send</button>
+								<input 
+									class="form-control col-md-9" 
+									type="text" 
+									v-model="newMessageText"
+									id="userInput"
+								>
+								<button class="btn btn-primary mb-2 col-md-2">Send</button>
 							</div>
 							
 						</form>
@@ -35,23 +48,33 @@
 		},
 		data() {
 			return {
+				newMessageText: '',
+				messages: [
+				],
+				nextMessageId: 1
 			}
 		},
 		mounted() {
-			axios
-				.get('#')
-				.then(console.log('axios seems to work'))
 		},
 		methods: {
-			sendMessage: function () {
-				var inputVal = document.getElementById('userInput').value;
+			messageSent: function () {
+				this.messages.push({
+					id: this.nextMessageId++,
+					content: this.newMessageText
+				})
+				this.newMessageText = ''
+			},
+			messageSend: function () {
+				var input = document.getElementById('userInput');
+				var self = this;
 
 				axios
 					.post(this.posturl,{
-						message: inputVal
+						message: input.value
 					})
 					.then(function (response) {
 						console.log(response);
+						self.messageSent()
 					})
 					.catch(function (error) {
 						console.log('message error: ' + error);
@@ -73,6 +96,7 @@
 	}
 	.sending, .sent {
 		margin-right: 0px;
+		margin-top: 2px;
 	}
 	.sending div{
 		background-color: lightgray;
