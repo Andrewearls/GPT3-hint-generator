@@ -21,7 +21,7 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('messaging-component', require('./components/MessagingComponent.vue').default);
-Vue.component('message-recieved', require('./components/MessageRecievedComponent.vue').default);
+Vue.component('message-received', require('./components/MessageReceivedComponent.vue').default);
 Vue.component('message-sent', require('./components/MessageSentComponent.vue').default);
 Vue.component('message-sending', require('./components/MessageSendingComponent.vue').default);
 

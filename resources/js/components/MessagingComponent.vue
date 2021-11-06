@@ -11,11 +11,12 @@
 									<message-sent></message-sent>
 									<message-sending></message-sending> -->
 									<div
-										is="message-sent"
+										v-bind:is="message.type"
 										v-for="message in messages"
 										v-bind:key="message.id"
 										v-bind:content="message.content"
 										v-on:remove="todos.splice(index,1)"
+										@hook:mounted="scrollToBottom()"
 									></div>
 									
 									
@@ -57,16 +58,29 @@
 		mounted() {
 		},
 		methods: {
+			scrollToBottom: function () {
+				var container = document.getElementById('conversationBox');
+				container.scrollTop = container.scrollHeight;	
+			},
+			messageReceived: function (message) {
+				this.messages.push({
+					id: this.nextMessageId++,
+					content: message,
+					type: 'message-received'
+				})
+				console.log(this.messages)
+			},
 			messageSent: function () {
 				this.messages.push({
 					id: this.nextMessageId++,
-					content: this.newMessageText
+					content: this.newMessageText,
+					type: 'message-sent'
 				})
 				this.newMessageText = ''
 			},
 			messageSend: function () {
 				var input = document.getElementById('userInput');
-				var self = this;
+				this.messageSent()
 
 				axios
 					.post(this.posturl,{
@@ -74,12 +88,18 @@
 					})
 					.then(function (response) {
 						console.log(response);
-						self.messageSent()
 					})
 					.catch(function (error) {
 						console.log('message error: ' + error);
 					})
 			}
+		},
+		created() {
+			Echo.channel('public')
+			.listen('MessageUser', (e) => {
+				this.messageReceived(e.message);
+				console.log(e.message);
+			});
 		}
 		
 	}
@@ -94,9 +114,12 @@
 	.received div{
 		background-color: lightblue;
 	}
+	.sending, .sent, .received {
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
 	.sending, .sent {
 		margin-right: 0px;
-		margin-top: 2px;
 	}
 	.sending div{
 		background-color: lightgray;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageUser;
 use Illuminate\Http\Request;
 
 class MessagingController extends Controller
@@ -19,6 +20,7 @@ class MessagingController extends Controller
     {
         // Sanatize
         // Trigger Event
+        MessageUser::dispatch($request->message);
         return response(200);
     }
 }
