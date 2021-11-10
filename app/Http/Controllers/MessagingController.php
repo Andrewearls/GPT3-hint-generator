@@ -20,7 +20,8 @@ class MessagingController extends Controller
     {
         // Sanatize
         // Trigger Event
-        MessageUser::dispatch($request->message);
+        // MessageUser::dispatch($request->message);
+        broadcast(new MessageUser($request->message))->toOthers();
         return response(200);
     }
 }
