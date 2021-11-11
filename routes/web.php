@@ -16,7 +16,7 @@ use App\Http\Controllers;
 
 Route::get('/', function () {
     return view('guest');
-});
+})->name('guest');
 
 Route::post('/message-gpt', [Controllers\MessagingController::class, 'messageGPT'])->name('messageGPT');
 
