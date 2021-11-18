@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('guest');
 })->name('guest');
 
-Route::post('/message-gpt', [Controllers\MessagingController::class, 'messageGPT'])->name('messageGPT');
+Route::post('/message-gpt', [Controllers\MessagingController::class, 'messageGPT'])->name('message.GPT');
 
 Auth::routes();
 

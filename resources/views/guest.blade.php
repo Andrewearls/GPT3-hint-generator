@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-	<messaging-component posturl="{{route('messageGPT')}}"></messaging-component>
+	<messaging-component posturl="{{route('message.GPT')}}"></messaging-component>
 @endsection
