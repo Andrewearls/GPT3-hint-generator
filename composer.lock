@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f7cd72f7ab3e18d1604a6e7ca5ea944",
+    "content-hash": "d32bee0e62621b1bc7b05e68ad824247",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3106,6 +3106,62 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "siteorigin/openai-api",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/siteorigin/openai-api.git",
+                "reference": "3ea6607f98144bc294213159fcbd2c7d0309f009"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/siteorigin/openai-api/zipball/3ea6607f98144bc294213159fcbd2c7d0309f009",
+                "reference": "3ea6607f98144bc294213159fcbd2c7d0309f009",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.3",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.17",
+                "larapack/dd": "^1.1",
+                "phpunit/phpunit": "^9.5",
+                "psy/psysh": "@stable",
+                "spatie/ray": "^1.27",
+                "vimeo/psalm": "^4.3",
+                "vlucas/phpdotenv": "^5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SiteOrigin\\OpenAI\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Priday",
+                    "email": "greg@siteorigin.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP wrapper for the OpenAI API",
+            "homepage": "https://github.com/siteorigin/openai_api",
+            "keywords": [
+                "GPT-3",
+                "openai"
+            ],
+            "support": {
+                "issues": "https://github.com/siteorigin/openai-api/issues",
+                "source": "https://github.com/siteorigin/openai-api/tree/1.0"
+            },
+            "time": "2021-07-08T09:04:18+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
