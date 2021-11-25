@@ -18,8 +18,16 @@ Route::get('/', function () {
     return view('guest');
 })->name('guest');
 
-Route::post('/message-gpt', [Controllers\MessagingController::class, 'messageGPT'])->name('message.GPT');
+Route::get('/test', [Controllers\MessagingController::class, 'index'])->name('test');
+
+Route::post('/test', [Controllers\MessagingController::class, 'messageGPT'])->name('message.GPT');
 
 Auth::routes();
 
 Route::get('/home', [Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/messages', [Controllers\MessagingController::class, 'index'])->name('messages');
+    Route::post('/messages', [Controllers\MessagingController::class, 'messageGPT']);
+    
+});

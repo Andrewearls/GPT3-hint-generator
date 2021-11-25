@@ -19,16 +19,17 @@ class MessageGPT implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-    public $message, $client;
+    public $message, $client, $user;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($message, $user)
     {
         $this->message = $message;
+        $this->user = $user;
     }
 
     /**
@@ -46,7 +47,7 @@ class MessageGPT implements ShouldQueue
             "Treasure is in Salem Oregon.",
             "Treasure is in a local park",
             "Treasure is under a tree",
-
+            "The Treasure is a pile of gold."
         ];
         $a = $this->client->answers(Engines::DAVINCI)->create(
             $this->message,
@@ -68,6 +69,6 @@ Three or more can fashion this."
 
         $response = head($a->answers);
 
-        broadcast(new MessageUser($response));
+        broadcast(new MessageUser($response, $this->user));
     }
 }

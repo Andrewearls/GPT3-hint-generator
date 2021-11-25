@@ -45,7 +45,8 @@
     // Default Vue scripts
 	export default {
 		props: {
-			posturl: String
+			posturl: String,
+			channel: String
 		},
 		data() {
 			return {
@@ -95,7 +96,7 @@
 			}
 		},
 		created() {
-			Echo.channel('public')
+			Echo.private('user.1')
 			.listen('MessageUser', (e) => {
 				this.messageReceived(e.message);
 				console.log(e.message);

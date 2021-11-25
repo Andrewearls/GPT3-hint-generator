@@ -2232,7 +2232,8 @@ __webpack_require__.r(__webpack_exports__);
 // Default Vue scripts
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    posturl: String
+    posturl: String,
+    channel: String
   },
   data: function data() {
     return {
@@ -2278,7 +2279,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    Echo.channel('public').listen('MessageUser', function (e) {
+    Echo["private"]('user.1').listen('MessageUser', function (e) {
       _this.messageReceived(e.message);
 
       console.log(e.message);

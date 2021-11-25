@@ -7,9 +7,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log; 
 use App\Http\Requests\UserMessageRequest;
 use App\Jobs\MessageGPT as OutgoingMessage;
+use Illuminate\Support\Facades\Auth;
 
 class MessagingController extends Controller
 {
+
+    /**
+     * Return messaging view.
+     *
+     * @param Request
+     * @return view
+     */
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+        $channel = 'App.Models.User.'.$user->id;
+        return view('message.inbox', ['channel' => $channel]);
+    }
+
     /**
      * Receive messege from user.
      * Sanatize message.
@@ -23,13 +38,15 @@ class MessagingController extends Controller
     {
         $validated = $request->safe()->collect();
         $message = $validated['message'];
-        // dd($message);
         // Sanatize
 
+
+        // User 
+        $user = Auth::user();
+
         // Trigger Event
-        OutgoingMessage::dispatch($message);
-        // broadcast(new MessageUser($request->message))->toOthers();
-        // broadcast(new MessageUser($a))->toOthers();
+        OutgoingMessage::dispatch($message, $user);
+
         return response(200);
     }
 }
