@@ -1,6 +1,7 @@
 <?php
 use Pest\Laravel;
 use Illuminate\Contracts\Auth\Authenticatable;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -13,6 +14,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 */
 
 uses(Tests\TestCase::class)->in('Feature');
+uses(Tests\DuskTestCase::class)->in('Browser');
 
 /*
 |--------------------------------------------------------------------------
