@@ -15,7 +15,8 @@ class MessageUser implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message, $user;
+    public $message;
+    private $user;
 
     /**
      * Create a new event instance.
@@ -29,6 +30,16 @@ class MessageUser implements ShouldBroadcast
     }
 
     /**
+     * The event's broadcast name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'MessageUser';
+    }
+
+    /**
      * Get the channels the event should broadcast on.
      *
      * @return \Illuminate\Broadcasting\Channel|array
@@ -36,6 +47,6 @@ class MessageUser implements ShouldBroadcast
     public function broadcastOn()
     {
         Log::debug($this->message . ' ' . $this->user->id);
-        return new PrivateChannel('App.Models.User.'.$this->user->id);
+        return new PrivateChannel($this->user->id);
     }
 }

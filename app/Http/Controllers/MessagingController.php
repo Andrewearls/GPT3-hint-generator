@@ -21,7 +21,7 @@ class MessagingController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $channel = 'App.Models.User.'.$user->id;
+        $channel = $user->id;
         return view('message.inbox', ['channel' => $channel]);
     }
 

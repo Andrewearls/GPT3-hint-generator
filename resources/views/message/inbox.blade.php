@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-	{{$channel}}
+	{{'channel ' . $channel}}
 	<messaging-component 
 		posturl="{{route('messages')}}" 
-		channel= "{{$channel}}"
+		channel="{{$channel}}"
 	></messaging-component>
 @endsection

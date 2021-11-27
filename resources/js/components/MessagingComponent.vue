@@ -96,8 +96,9 @@
 			}
 		},
 		created() {
-			Echo.private('user.1')
-			.listen('MessageUser', (e) => {
+			Echo.private(this.channel)
+			.listen(".MessageUser", (e) => {
+				console.log('receiving a message');
 				this.messageReceived(e.message);
 				console.log(e.message);
 			});

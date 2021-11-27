@@ -2279,7 +2279,9 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    Echo["private"]('user.1').listen('MessageUser', function (e) {
+    Echo["private"](this.channel).listen(".MessageUser", function (e) {
+      console.log('receiving a message');
+
       _this.messageReceived(e.message);
 
       console.log(e.message);
