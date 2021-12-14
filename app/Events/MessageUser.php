@@ -46,7 +46,6 @@ class MessageUser implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        Log::debug($this->message . ' ' . $this->user->id);
         return new PrivateChannel($this->user->id);
     }
 }

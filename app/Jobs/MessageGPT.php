@@ -44,24 +44,32 @@ class MessageGPT implements ShouldQueue
 
         // request an Answer from GPT-3
         $documents = [
-            "Treasure is in Salem Oregon.",
-            "Treasure is in a local park",
-            "Treasure is under a tree",
-            "The Treasure is a pile of gold."
+            "The treasure is in Salem Oregon.",
+            "The treasure is in a local park",
+            "The treasure is under a tree",
+            "The treasure is a pile of gold.",
+            "The treasure is past the world",
+            "The treasure is over the bridge",
+            "The treasure is through the woods",
+            "The treasure is near the water",
+            "A hint might be, look down",
+            "A hint might be, look up",
+            "A hint might be, near the water",
+            "A hint might be, look closely",
+            "The treasure is not near the bridge"
         ];
         $a = $this->client->answers(Engines::DAVINCI)->create(
             $this->message,
             $documents, // Or a file-id
-            'The treasure is hidden verry well, you may not find it.',
+            'The treasure is hidden verry well',
             [
                 [
-                    "Where is the treasure hidden?",
-                    "One strand dangles. Two strands twist.
-Three or more can fashion this."
+                    "How old is the treasure?",
+                    "The treasure is old enough to exist."
                 ],
                 [
-                    "Can you give me a clue?",
-                    "What can travel around the world while staying in a corner?"
+                    "Where is the car?",
+                    "The car is parked on the street."
                 ]
             ],
             ["max_tokens" => 15, "stop" => ["\n", "<|endoftext|>"] ]
