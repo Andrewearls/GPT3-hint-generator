@@ -20,6 +20,11 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('messaging-component', require('./components/MessagingComponent.vue').default);
+Vue.component('message-received', require('./components/MessageReceivedComponent.vue').default);
+Vue.component('message-sent', require('./components/MessageSentComponent.vue').default);
+Vue.component('message-sending', require('./components/MessageSendingComponent.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

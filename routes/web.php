@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('guest');
+})->name('guest');
+
+Route::get('/test', [Controllers\MessagingController::class, 'index'])->name('test');
+
+Route::post('/test', [Controllers\MessagingController::class, 'messageGPT'])->name('message.GPT');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/messages', [Controllers\MessagingController::class, 'index'])->name('messages');
+    Route::post('/messages', [Controllers\MessagingController::class, 'messageGPT']);
+    
+});
