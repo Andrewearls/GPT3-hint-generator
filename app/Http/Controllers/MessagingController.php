@@ -20,6 +20,7 @@ class MessagingController extends Controller
      */
     public function index(Request $request)
     {
+        // should be able to grab this from the request. User has been authed.
         $user = Auth::user();
         $channel = $user->id;
         return view('message.inbox', ['channel' => $channel]);
