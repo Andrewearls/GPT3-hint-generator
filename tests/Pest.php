@@ -1,6 +1,8 @@
 <?php
 use Pest\Laravel;
 use Illuminate\Contracts\Auth\Authenticatable;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +15,9 @@ use Illuminate\Contracts\Auth\Authenticatable;
 |
 */
 
-uses(Tests\TestCase::class)->in('Feature');
+uses(Tests\TestCase::class)->in('Feature', 'Unit');
 uses(Tests\DuskTestCase::class)->in('Browser');
+uses(RefreshDatabase::class)->in('Api');
 
 /*
 |--------------------------------------------------------------------------
