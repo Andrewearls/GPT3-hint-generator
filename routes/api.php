@@ -17,6 +17,8 @@ use App\Http\Controllers;
 
 Route::post('/registration', [Controllers\Auth\RegisterController::class, 'register']);
 
+Route::post('/sanctum/token', [Controllers\Api\Sanctum\TokenController::class, 'create']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
