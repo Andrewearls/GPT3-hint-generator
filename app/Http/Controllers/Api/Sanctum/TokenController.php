@@ -21,17 +21,24 @@ class TokenController extends Controller
         // this should be moved to a validation request
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
             'device_name' => 'required',
         ]);
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        /** 
+         * This should probably be middleware
+         * 
+         * if user is in database
+         * and if sanctum token valid
+         */
+        if ($user && $user->tokens->isNotEmpty()) { 
+            // user has valid token do nothing
+            return "token not created";
         }
+        
+        // Sync user info
+        // Generate new token
 
         return $user->createToken($request->device_name)->plainTextToken;
     }
