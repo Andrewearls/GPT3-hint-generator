@@ -8,17 +8,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use App\Models\User;
 
 class CreateAdaloUser implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-         * The email for the new user.
-         *
-         * @var string
-         */
-        protected $email;
+     * The Adalo User email.
+     * The Adalo User collection Endpoint.
+     *
+     * @var string
+     * @var string
+     */
+    protected $email, $endpoint;
 
     /**
      * Create a new job instance.
@@ -28,6 +32,7 @@ class CreateAdaloUser implements ShouldQueue
     public function __construct($email)
     {
         $this->email = $email;
+        $this->endpoint = "https://api.adalo.com/v0/apps/" . env('ADALO_APP_ID') . '/' . env('ADALO_USER_COLLECTION_ID') . '/' . $this->email;
     }
 
     /**
@@ -37,9 +42,17 @@ class CreateAdaloUser implements ShouldQueue
      */
     public function handle()
     {
+        
         // get data from adalo
+        $response = Http::get($this->endpoint);
+        dd($response);
         // create a new user
+
+
         // set sanctum token
+
+
         // update adalo
+
     }
 }
