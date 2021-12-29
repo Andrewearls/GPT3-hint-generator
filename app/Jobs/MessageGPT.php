@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Jobs\Adalo\MessageUser as AdaloMessageUser;
 use App\Events\MessageUser;
 
 // Set up a client with your API key.
@@ -39,6 +40,7 @@ class MessageGPT implements ShouldQueue
      */
     public function handle()
     {
+        // this should be a service
         // create a client with API key
         $this->client = new Client($_ENV['OPENAI_API_KEY']);
 
@@ -78,5 +80,7 @@ class MessageGPT implements ShouldQueue
         $response = head($a->answers);
 
         broadcast(new MessageUser($response, $this->user));
+
+        AdaloMessageUser::dispatch($response, $this->user);
     }
 }

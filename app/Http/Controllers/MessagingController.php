@@ -45,7 +45,6 @@ class MessagingController extends Controller
         // User 
         $user = Auth::user();
 
-        Log::debug('made it here');
         // Trigger Event
         OutgoingMessage::dispatch($message, $user);
 
