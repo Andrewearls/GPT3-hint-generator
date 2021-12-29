@@ -23,10 +23,9 @@ class CreateAdaloUser implements ShouldQueue
      * The Adalo User collection Endpoint.
      *
      * @var string email
-     * @var string name
      * @var string url
      */
-    protected $email, $name, $endpoint;
+    protected $email, $endpoint;
 
     /**
      * Create a new job instance.
@@ -36,7 +35,7 @@ class CreateAdaloUser implements ShouldQueue
     public function __construct($email, $name)
     {
         $this->email = $email;
-        $this->name = $name;
+
         // this should be a service container
         $this->endpoint = "https://api.adalo.com/v0/apps/" . env('ADALO_APP_ID') . '/collections/' . env('ADALO_USER_COLLECTION_ID');
     }
@@ -48,15 +47,8 @@ class CreateAdaloUser implements ShouldQueue
      */
     public function handle()
     {
-        
-        // get data from adalo
-        // $response = Http::withOptions([
-        //     'debug' => true,
-        // ])->withToken(env('ADALO_BEARER_TOKEN'))->acceptJson()->get($this->endpoint);
-
-        // dd($response->json());
-
-        // update adalo
-
+        // Use integromat to get the user ID
+        // Get the user
+        // set the user adalo relationship
     }
 }
