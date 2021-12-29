@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
 
 // test if user exists and token is not empty
-test('user exists and token not empty', function () {
+test('user exists, return success', function () {
 
     Queue::fake();
 
@@ -24,7 +24,7 @@ test('user exists and token not empty', function () {
 });
 
 // test if user exists and token is empty
-test('user exists and token is empty', function () {
+test('user exists, dont push job' , function () {
 
     Queue::fake();
 
@@ -43,7 +43,7 @@ test('user exists and token is empty', function () {
 });
 
 // test if user does not exist
-test('user does not exists', function () {
+it('creates user', function () {
     
     Queue::fake();
 
@@ -58,6 +58,9 @@ test('user does not exists', function () {
 
     $user->refresh();
 
-    Queue::assertPushed(CreateAdaloUser::class);
+    $this->assertDatabaseHas('users', [
+        'email' => $user->email,
+    ]);
+
 });
 

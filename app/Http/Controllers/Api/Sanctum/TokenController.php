@@ -37,11 +37,24 @@ class TokenController extends Controller
             // user has valid token do nothing
             return "token not created";
         }
+
+        // create a new user
+        $user = User::firstOrCreate(
+            ['email' => $this->email],
+            [
+                'password' => Hash::make(Str::random(10)),
+                'name' => $this->name,
+            ],
+        );
+
+        // set sanctum token
+        $user->refresh();
+        $token = $user->createToken($user->name.' Adalo Token');
         
         // Create new Adalo User
-        CreateAdaloUser::dispatch($request->email);
+        // CreateAdaloUser::dispatch($user);
 
-        return 'creating token';
+        return toJson(['token' => $token->plainTextToken]);
         // return $user->createToken($request->device_name)->plainTextToken;
     }
 }
