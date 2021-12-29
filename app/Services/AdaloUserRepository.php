@@ -32,7 +32,22 @@ class AdaloUserRepository
 	 * @param int offset optional
 	 * @return json
 	 */	
-	public function getResponse($collection, $offset = 0, $limit = 100)
+	// public function getResponse($collection, $offset = 0, $limit = 100)
+	// {
+	// 	# code...
+	// }
+
+	// This should be broken up into two other services
+	// One should be an adalo connection service
+	// The other should be a message repository service
+	// This user repository service should remain
+	/**
+	 * Insert record into message collection.
+	 *
+	 * @param Model/User
+	 * @param Message
+	 */
+	public function SendMessage(User $user)
 	{
 		# code...
 	}
