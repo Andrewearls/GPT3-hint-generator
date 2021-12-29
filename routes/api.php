@@ -22,3 +22,14 @@ Route::post('/sanctum/token', [Controllers\Api\Sanctum\TokenController::class, '
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::name('message.')->prefix('message')->group(function () {
+        
+        Route::post('/send', [Controllers\MessagingController::class, 'messageGPT'])->name('send');
+
+    });
+    
+});
