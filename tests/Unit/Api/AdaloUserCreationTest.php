@@ -12,7 +12,7 @@ it('can dispatch', function () {
 
     $user = User::factory()->make();
 
-    CreateAdaloUser::dispatch($user->email);
+    CreateAdaloUser::dispatch($user->email, $user->name);
 
     Queue::assertPushed(CreateAdaloUser::class);
 });
@@ -24,7 +24,7 @@ it('creates new user', function () {
         'email' => 'andrew.e.earls@gmail.com',
     ]);
 
-    CreateAdaloUser::dispatch($user->email);
+    CreateAdaloUser::dispatch($user->email, $user->name);
 
     $this->assertDatabaseHas('users', [
         'email' => $user->email,
@@ -33,6 +33,20 @@ it('creates new user', function () {
 });
 
 // set sanctum token
+it('sets the sanctum token', function () {
+
+    $user = User::factory()->make([
+        'email' => 'andrew.e.earls@gmail.com',
+    ]);
+
+    CreateAdaloUser::dispatch($user->email, $user->name);
+
+    $user->refresh();
+
+    dd($user->tokens);
+    $this->assertTrue($user->tokens->isEmpty());
+});
+
 // sends token to adalo 
 
 // adalo has no user
