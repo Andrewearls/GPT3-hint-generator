@@ -4,21 +4,33 @@ use App\Models\User;
 use App\Jobs\CreateAdaloUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 
-// test if user exists and token is not empty
-test('user exists, return success', function () {
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
 
     Queue::fake();
 
-    $user = User::factory()->create();
-    $token = $user->createToken($user->name . " mobile")->plainTextToken;
+    $this->user = User::factory()->make();
 
-    $data = [
-        'email' => $user->email,
-        'device_name' => $user->name . ' mobile',
+    $this->data = [
+        'email' => $this->user->email,
+        'name' => $this->user->name,
+        'device_name' => $this->user->name . ' mobile',
     ];
 
-    $response = $this->postJson('/api/sanctum/token', $data);
+});
+
+// test if user exists
+test('user exists, return success', function () {
+
+    $this->user->save();
+
+    $token = $this->user->createToken($this->user->name . " mobile")->plainTextToken;
+
+    $response = $this->postJson('/api/sanctum/token', $this->data);
 
     $response->assertStatus(200);
 });
@@ -26,41 +38,53 @@ test('user exists, return success', function () {
 // test if user exists and token is empty
 test('user exists, dont push job' , function () {
 
-    Queue::fake();
+    $this->user->save();
 
-    $user = User::factory()->create();
+    $response = $this->postJson('/api/sanctum/token', $this->data);
 
-    $data = [
-        'email' => $user->email,
-        'device_name' => $user->name . ' mobile',
-    ];
-
-    $response = $this->postJson('/api/sanctum/token', $data);
-
-    $user->refresh();
+    $this->user->refresh();
 
     Queue::assertNotPushed(CreateAdaloUser::class);
 });
 
+// test if user exists and token is empty
+test('user exists, no token created' , function () {
+
+    $this->user->save();
+
+    $response = $this->postJson('/api/sanctum/token', $this->data);
+
+    $this->user->refresh();
+
+    $this->assertTrue($this->user->tokens->isEmpty());
+});
+
 // test if user does not exist
 it('creates user', function () {
-    
-    Queue::fake();
 
-    $user = User::factory()->make();
+    $response = $this->postJson('/api/sanctum/token', $this->data);
 
-    $data = [
-        'email' => $user->email,
-        'device_name' => $user->name . ' mobile',
-    ];
+    $user = User::where('email', $this->user->email)->first();
 
-    $response = $this->postJson('/api/sanctum/token', $data);
-
-    $user->refresh();
-
-    $this->assertDatabaseHas('users', [
-        'email' => $user->email,
-    ]);
+    $this->assertModelExists($user);
 
 });
 
+// test if user exists and token is empty
+it('creates token' , function () {
+
+    $response = $this->postJson('/api/sanctum/token', $this->data);
+
+    $user = User::where('email', $this->user->email)->first();
+
+    $this->assertTrue($user->tokens->isNotEmpty());
+});
+
+
+// user doesn't exist job should push
+it('pushes job' , function () {
+
+    $response = $this->postJson('/api/sanctum/token', $this->data);
+
+    Queue::assertNotPushed(CreateAdaloUser::class);
+});

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use App\Jobs\CreateAdaloUser;
 
@@ -22,39 +23,40 @@ class TokenController extends Controller
         // this should be moved to a validation request
         $request->validate([
             'email' => 'required|email',
+            'name' => 'required',
             'device_name' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::firstOrNew(
+            ['email' => $request->email],
+            [
+                'password' => Hash::make(Str::random(10)),
+                'name' => $request->name,
+            ],
+        );
 
         /** 
          * This should probably be middleware
          * 
          * if user is in database
-         * and if sanctum token valid
          */
-        if ($user) { 
-            // user has valid token do nothing
-            return "token not created";
+        if ($user->exists) { 
+            // user exists do nothing
+            return response()->json([
+                'message' => 'token not created',
+            ]);
         }
 
-        // create a new user
-        $user = User::firstOrCreate(
-            ['email' => $this->email],
-            [
-                'password' => Hash::make(Str::random(10)),
-                'name' => $this->name,
-            ],
-        );
+        // Persist user to database
+        $user->save();
+        $user->refresh();
+
+        // Create new Adalo User Relationship
+        CreateAdaloUser::dispatch($user);
 
         // set sanctum token
-        $user->refresh();
-        $token = $user->createToken($user->name.' Adalo Token');
-        
-        // Create new Adalo User
-        // CreateAdaloUser::dispatch($user);
+        $token = $user->createToken($user->name.' Adalo Token')->plainTextToken;
 
-        return toJson(['token' => $token->plainTextToken]);
-        // return $user->createToken($request->device_name)->plainTextToken;
+        return response()->json(['token' => $token]);
     }
 }
