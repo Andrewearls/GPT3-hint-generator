@@ -4,7 +4,7 @@ namespace App\Services\Adalo;
 
 use App\Models\User;
 
-class UserRepositoryConnection extends Connection
+class MessageCollectionConnection extends Connection
 {
 
 	/**
@@ -14,7 +14,7 @@ class UserRepositoryConnection extends Connection
 	 */
 	public function __construct()
 	{
-		parent::__construct(env('ADALO_USER_COLLECTION_ID'))
+		parent::__construct(env('ADALO_MESSAGE_COLLECTION_ID'))
 	}
 
 }
