@@ -1,4 +1,5 @@
 <?php
+
 use Pest\Laravel;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\User;
