@@ -14,7 +14,7 @@ class UserCollectionConnection extends Connection
 	 */
 	public function __construct()
 	{
-		parent::__construct(env('ADALO_USER_COLLECTION_ID'))
+		parent::__construct(env('ADALO_USER_COLLECTION_ID'));
 	}
 
 }

@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Http;
 
 class Connection
 {
-	private string $apiAppId;
+	public string $apiAppId;
 
-	private string $apiCollectionId;
+	public string $apiCollectionId;
 
 	private string $url;
 
@@ -30,7 +30,7 @@ class Connection
 
 		$this->bearerToken = env('ADALO_BEARER_TOKEN');
 
-		$this->url = sprintf('https://api.adalo.com/apps/%1$s/collections/%2$s', self::apiAppId, self::apiCollectionId);
+		$this->url = sprintf('https://api.adalo.com/apps/%1$s/collections/%2$s', $this->apiAppId, $this->apiCollectionId);
 
 		// $this->guzzle = new GuzzleClient([
 		// 	'base_uri' => sprintf('https://api.adalo.com/apps/%1$s/collections/%2$s', self::apiAppId, self::apiCollectionId),
@@ -48,25 +48,58 @@ class Connection
 	// 	return $this->guzzle;
 	// }
 
-	// get all collection records
 	/**
 	 * Get all collection records.
 	 *
-	 * @return json_decode variable
+	 * @return HTTP response
 	 */
 	public function getAll()
 	{
-		$response = Http::accept('application/json')
+		return Http::accept('application/json')
 			->withToken($this->bearerToken)
 			->get($this->url);
-
 	}
 
-	// add a collection record
+	/**
+	 * Add a collection record.
+	 *
+	 * @param string record
+	 * @return HTTP response
+	 */
+	public function save(string $record)
+	{
+		return Http::accept('application/json')
+			->withToken($this->bearerToken)
+			->post($this->url, [
+				'Message Text' => $record,
+			]);
+	}
 
-	// fetch a single collection record
+	/**
+	 * Get a single collection record.
+	 *
+	 * @return HTTP response
+	 */
+	public function getOne($id)
+	{
+		return Http::accept('application/json')
+			->withToken($this->bearerToken)
+			->get($this->url . '/' . $id);
+	}
 
-	// delete a single collection record
+	/**
+	 * Delete a single collection record.
+	 *
+	 * @return HTTP response
+	 */
+	public function delete($id, string $record)
+	{
+		return Http::accept('application/json')
+			->withToken($this->bearerToken)
+			->put($this->url . '/' . $id, [
+				'Message Text' => $record,
+			]);
+	}
 
 	// update a record in the specified collection
 }
