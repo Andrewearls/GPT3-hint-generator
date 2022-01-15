@@ -52,7 +52,7 @@ class TokenController extends Controller
         $user->refresh();
 
         // Create new Adalo User Relationship
-        CreateAdaloUser::dispatch($user);
+        // CreateAdaloUser::dispatch($user);
 
         // set sanctum token
         $token = $user->createToken($user->name.' Adalo Token')->plainTextToken;
