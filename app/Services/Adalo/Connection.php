@@ -14,8 +14,6 @@ class Connection
 
 	private string $bearerToken;
 
-	// private GuzzleClient $guzzle;
-
 	/**
 	 * Construct a new instance.
 	 *
@@ -32,21 +30,7 @@ class Connection
 
 		$this->url = sprintf('https://api.adalo.com/apps/%1$s/collections/%2$s', $this->apiAppId, $this->apiCollectionId);
 
-		// $this->guzzle = new GuzzleClient([
-		// 	'base_uri' => sprintf('https://api.adalo.com/apps/%1$s/collections/%2$s', self::apiAppId, self::apiCollectionId),
-		// 	'headers' => $headers,
-		// ]);
 	}
-
-	/**
-	 * Return the guzzleClient.
-	 *
-	 * @return GuzzleClient
-	 */
-	// public function guzzleClient() : GuzzleClient
-	// {
-	// 	return $this->guzzle;
-	// }
 
 	/**
 	 * Get all collection records.
