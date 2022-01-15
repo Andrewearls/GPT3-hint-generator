@@ -50,4 +50,15 @@ class MessagingController extends Controller
 
         return response(200);
     }
+
+    /**
+     * Get all messages.
+     *
+     * @return json messages
+     */
+    public function getAll(Request $request)
+    {
+        dd($request->user());
+        return '';
+    }
 }
