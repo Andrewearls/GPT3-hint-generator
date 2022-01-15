@@ -15,8 +15,6 @@ use App\Http\Controllers;
 |
 */
 
-Route::post('/registration', [Controllers\Auth\RegisterController::class, 'register']);
-
 Route::post('/sanctum/token', [Controllers\Api\Sanctum\TokenController::class, 'create']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -29,6 +27,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::name('message.')->prefix('message')->group(function () {
         
         Route::post('/send', [Controllers\MessagingController::class, 'messageGPT'])->name('send');
+
+        Route::get('/all', [Controllers\MessagingController::class, 'getAll'])->name('get.all');
 
     });
     
