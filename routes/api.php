@@ -17,9 +17,9 @@ use App\Http\Controllers;
 
 Route::post('/sanctum/token', [Controllers\Api\Sanctum\TokenController::class, 'create']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -30,6 +30,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::get('/all', [Controllers\MessagingController::class, 'getAll'])->name('get.all');
 
+    });
+
+    Route::name('read.status.')->prefix('status')->group(function () {
+
+        Route::get('/all', [Controllers\Api\StatusController::class, 'getAll'])->name('get.all');
+    });
+
+    Route::name('conversation.')->prefix('conversation')->group(function () {
+
+        Route::get('/all', [Controllers\Api\ConversationController::class, 'getAll'])->name('get.all');
     });
     
 });
