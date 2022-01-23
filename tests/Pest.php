@@ -4,6 +4,7 @@ use Pest\Laravel;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +19,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(Tests\TestCase::class)->in('Feature', 'Unit');
 uses(Tests\DuskTestCase::class)->in('Browser');
-uses(RefreshDatabase::class)->in('Api');
+uses(RefreshDatabase::class)->in('Feature/Api');
 
+uses()->beforeEach(function () {
+    $user = User::first();
+
+    Sanctum::actingAs(
+        $user,
+        ['*']
+    );
+})->in('Feature/Api');
 /*
 |--------------------------------------------------------------------------
 | Expectations
