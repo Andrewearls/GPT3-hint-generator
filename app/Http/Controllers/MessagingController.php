@@ -59,7 +59,6 @@ class MessagingController extends Controller
     public function getAll(Request $request)
     {
 
-        // dd($request->user()->messages()->toJson());
         return $request->user()->messages()->toJson();
     }
 }
