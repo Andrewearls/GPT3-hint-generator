@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UserMessageRequest;
 use App\Jobs\MessageGPT as OutgoingMessage;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\MessageResource;
 
 class MessagingController extends Controller
 {
@@ -59,6 +60,9 @@ class MessagingController extends Controller
     public function getAll(Request $request)
     {
 
-        return $request->user()->messages()->toJson();
+        $response = MessageResource::collection($request->user()->messages());
+        // dd($response);
+
+        return $response;
     }
 }
