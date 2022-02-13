@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ReadStatusResource;
 use Illuminate\Http\Request;
 
 class StatusController extends Controller
@@ -15,8 +16,6 @@ class StatusController extends Controller
      */
     public function getAll(Request $request)
     {
-        return $request->user()->conversations->map(function ($conversation) {
-            return $conversation->members;
-        })->toJson();
+        return ReadStatusResource::collection($request->user()->conversations);
     }
 }
