@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ConversationResource;
 use Illuminate\Http\Request;
 
 class ConversationController extends Controller
@@ -15,7 +16,7 @@ class ConversationController extends Controller
      */
     public function getAll(Request $request)
     {
-        // dd($request->user()->conversations()->get()->toJson());
-        return $request->user()->conversations()->get()->toJson();
+        // dd($request->user()->conversations->first()->creator);
+        return ConversationResource::collection($request->user()->conversations);
     }
 }

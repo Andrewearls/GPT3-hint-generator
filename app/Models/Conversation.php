@@ -26,8 +26,10 @@ class Conversation extends Model
     public function members()
     {
         return $this->belongsToMany(
-            User::class, 
-            'conversation_members'
+            User::class,
+            'conversation_members',
+            'conversation_id',
+            'user_id',
         )->withPivot('read_status');
     }
 
@@ -38,7 +40,7 @@ class Conversation extends Model
      */
     public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -50,5 +52,5 @@ class Conversation extends Model
     {
         return $this->hasMany(Message::class);
     }
-    
+
 }

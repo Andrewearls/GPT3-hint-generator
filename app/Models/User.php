@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -51,7 +50,7 @@ class User extends Authenticatable
      */
     public function conversation()
     {
-        return $this->hasMany(Conversation::class);
+        return $this->hasMany(Conversation::class, 'user_id');
     }
 
     /**
@@ -61,7 +60,7 @@ class User extends Authenticatable
      */
     public function conversations()
     {
-        return $this->belongsToMany(Conversation::class, 'conversation_members')->withPivot('read_status')->as('members');
+        return $this->belongsToMany(Conversation::class, 'conversation_members')->withPivot('read_status');
     }
 
     /**
@@ -82,10 +81,10 @@ class User extends Authenticatable
     public function messages()
     {
         //select the messsages
-        //in the conversations 
+        //in the conversations
         //that this user is a member of
         return Message::whereHas('conversation.members', function (Builder $query) {
-                $query->where('user_id', $this->id);
+            $query->where('user_id', $this->id);
         })->get();
     }
 
