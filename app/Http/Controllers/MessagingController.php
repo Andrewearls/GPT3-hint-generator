@@ -56,10 +56,6 @@ class MessagingController extends Controller
      */
     public function getAll(Request $request)
     {
-
-        $response = MessageResource::collection($request->user()->messages());
-        // dd($response);
-
-        return $response;
+        return MessageResource::collection($request->user()->messages());
     }
 }
