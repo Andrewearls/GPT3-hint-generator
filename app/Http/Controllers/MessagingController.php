@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageUser;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log; 
 use App\Http\Requests\UserMessageRequest;
+use App\Http\Resources\MessageResource;
 use App\Jobs\MessageGPT as OutgoingMessage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MessagingController extends Controller
@@ -21,7 +20,7 @@ class MessagingController extends Controller
     public function index(Request $request)
     {
         // should be able to grab this from the request. User has been authed.
-        $user = Auth::user();
+        $user    = Auth::user();
         $channel = $user->id;
         return view('message.inbox', ['channel' => $channel]);
     }
@@ -30,7 +29,7 @@ class MessagingController extends Controller
      * Receive messege from user.
      * Sanatize message.
      * Trigger MessageGPT event.
-     * Return success.  
+     * Return success.
      *
      * @param Request
      * @return success
@@ -38,17 +37,25 @@ class MessagingController extends Controller
     public function messageGPT(UserMessageRequest $request)
     {
         $validated = $request->safe()->collect();
-        $message = $validated['message'];
+        $message   = $validated['message'];
         // Sanatize
 
-
-        // User 
+        // User
         $user = Auth::user();
 
-        Log::debug('made it here');
         // Trigger Event
         OutgoingMessage::dispatch($message, $user);
 
         return response(200);
+    }
+
+    /**
+     * Get all messages.
+     *
+     * @return json messages
+     */
+    public function getAll(Request $request)
+    {
+        return MessageResource::collection($request->user()->messages());
     }
 }

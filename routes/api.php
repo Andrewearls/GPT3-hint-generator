@@ -15,10 +15,31 @@ use App\Http\Controllers;
 |
 */
 
-Route::post('/registration', [Controllers\Auth\RegisterController::class, 'register']);
-
 Route::post('/sanctum/token', [Controllers\Api\Sanctum\TokenController::class, 'create']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::name('message.')->prefix('message')->group(function () {
+        
+        Route::post('/send', [Controllers\MessagingController::class, 'messageGPT'])->name('send');
+
+        Route::get('/all', [Controllers\MessagingController::class, 'getAll'])->name('get.all');
+
+    });
+
+    Route::name('read.status.')->prefix('status')->group(function () {
+
+        Route::get('/all', [Controllers\Api\StatusController::class, 'getAll'])->name('get.all');
+    });
+
+    Route::name('conversation.')->prefix('conversation')->group(function () {
+
+        Route::get('/all', [Controllers\Api\ConversationController::class, 'getAll'])->name('get.all');
+    });
+    
 });

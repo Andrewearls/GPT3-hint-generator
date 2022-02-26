@@ -6,7 +6,9 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Jobs\CreateAdaloUser;
 
 class TokenController extends Controller
 {
@@ -21,18 +23,40 @@ class TokenController extends Controller
         // this should be moved to a validation request
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'name' => 'required',
             'device_name' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::firstOrNew(
+            ['email' => $request->email],
+            [
+                'password' => Hash::make(Str::random(10)),
+                'name' => $request->name,
+            ],
+        );
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+        /** 
+         * This should probably be middleware
+         * 
+         * if user is in database
+         */
+        if ($user->exists) { 
+            // user exists do nothing
+            return response()->json([
+                'message' => 'token not created',
             ]);
         }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        // Persist user to database
+        $user->save();
+        $user->refresh();
+
+        // Create new Adalo User Relationship
+        // CreateAdaloUser::dispatch($user);
+
+        // set sanctum token
+        $token = $user->createToken($user->name.' Adalo Token')->plainTextToken;
+
+        return response()->json(['token' => $token]);
     }
 }
