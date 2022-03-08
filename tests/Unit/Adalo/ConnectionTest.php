@@ -7,7 +7,7 @@ test('it gets all users', function () {
 
     $response = $users->getAll();
 
-    dd($response->json());
+    // dd($response->json());
 
     $response->assertStatus(200);
 });
