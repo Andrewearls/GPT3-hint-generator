@@ -2,14 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Jobs\Adalo\MessageUser as AdaloMessageUser;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Jobs\Adalo\MessageUser as AdaloMessageUser;
-use App\Events\MessageUser;
 
 // Set up a client with your API key.
 use SiteOrigin\OpenAI\Client;
@@ -19,7 +17,6 @@ class MessageGPT implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
     public $message, $client, $user;
 
     /**
@@ -27,10 +24,10 @@ class MessageGPT implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($message, $user)
+    public function __construct($message, $conversation)
     {
-        $this->message = $message;
-        $this->user = $user;
+        $this->message      = $message;
+        $this->conversation = $conversation;
     }
 
     /**
@@ -58,7 +55,7 @@ class MessageGPT implements ShouldQueue
             "A hint might be, look up",
             "A hint might be, near the water",
             "A hint might be, look closely",
-            "The treasure is not near the bridge"
+            "The treasure is not near the bridge",
         ];
         $a = $this->client->answers(Engines::DAVINCI)->create(
             $this->message,
@@ -67,20 +64,20 @@ class MessageGPT implements ShouldQueue
             [
                 [
                     "How old is the treasure?",
-                    "The treasure is old enough to exist."
+                    "The treasure is old enough to exist.",
                 ],
                 [
                     "Where is the car?",
-                    "The car is parked on the street."
-                ]
+                    "The car is parked on the street.",
+                ],
             ],
-            ["max_tokens" => 15, "stop" => ["\n", "<|endoftext|>"] ]
+            ["max_tokens" => 15, "stop" => ["\n", "<|endoftext|>"]]
         );
 
         $response = head($a->answers);
 
-        broadcast(new MessageUser($response, $this->user));
+        // broadcast(new MessageUser($response, $this->user));
 
-        AdaloMessageUser::dispatch($response, $this->user);
+        AdaloMessageUser::dispatch($response, $this->conversation);
     }
 }
