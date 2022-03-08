@@ -20,6 +20,7 @@ class CreateMessagesTable extends Migration
             $table->text('message_text');
             $table->foreignIdFor(Conversation::class);
             $table->foreignIdFor(User::class);
+            $table->foreignId('adalo_message_id')->nullable();
             $table->timestamps();
         });
     }

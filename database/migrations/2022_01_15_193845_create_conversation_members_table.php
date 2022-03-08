@@ -19,7 +19,7 @@ class CreateConversationMembersTable extends Migration
             $table->id();
             $table->boolean('read_status')->default(false);
             $table->foreignIdFor(Conversation::class);
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->nullable();
             $table->timestamps();
         });
     }

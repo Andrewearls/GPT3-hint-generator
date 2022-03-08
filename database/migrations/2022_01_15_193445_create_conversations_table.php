@@ -18,6 +18,7 @@ class CreateConversationsTable extends Migration
             $table->id();
             $table->text('name');
             $table->foreignIdFor(User::class);
+            $table->foreignId('adalo_conversation_id')->nullable();
             $table->timestamps();
         });
     }

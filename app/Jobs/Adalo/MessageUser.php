@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Adalo;
 
+use App\Services\Adalo\MessageCollectionConnection as client;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,15 +13,18 @@ class MessageUser implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $conversation;
+    public $message;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($message, $user)
+    public function __construct($message, $conversation)
     {
-        $this->message = $message;
-        $this->user = $user;
+        $this->message      = $message;
+        $this->conversation = $conversation;
     }
 
     /**
@@ -32,5 +35,7 @@ class MessageUser implements ShouldQueue
     public function handle()
     {
         //use the adalo service to send message to Adalo
+        $AdaloMessages = new Client();
+        $AdaloMessages->persist($this->conversation, $this->message);
     }
 }

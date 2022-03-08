@@ -43,8 +43,11 @@ class MessagingController extends Controller
         // User
         $user = Auth::user();
 
+        // get the pioneer conversation Id
+        $conversation = $user->conversation()->first();
+
         // Trigger Event
-        OutgoingMessage::dispatch($message, $user);
+        OutgoingMessage::dispatch($message, $conversation->id);
 
         return response(200);
     }
