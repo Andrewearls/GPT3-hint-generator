@@ -47,7 +47,7 @@ class MessagingController extends Controller
         $conversation = $user->conversation()->first();
 
         // Trigger Event
-        OutgoingMessage::dispatch($message, $conversation->id);
+        OutgoingMessage::dispatch($message, $conversation->adalo_conversation_id);
 
         return response(200);
     }
