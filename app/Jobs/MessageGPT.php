@@ -17,7 +17,7 @@ class MessageGPT implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $message, $client, $user;
+    public $message, $client, $user, $conversation;
 
     /**
      * Create a new job instance.
