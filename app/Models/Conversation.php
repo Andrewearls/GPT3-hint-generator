@@ -16,6 +16,7 @@ class Conversation extends Model
      */
     protected $fillable = [
         'name',
+        'adalo_conversation_id',
     ];
 
     /**
