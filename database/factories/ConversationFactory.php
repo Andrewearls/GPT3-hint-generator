@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Coversation;
+use App\Models\Conversation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ConversationFactory extends Factory
@@ -22,7 +22,8 @@ class ConversationFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker()->name(),
+            'name'                  => $this->faker->name(),
+            'adalo_conversation_id' => $this->faker->randomDigit(),
         ];
     }
 }

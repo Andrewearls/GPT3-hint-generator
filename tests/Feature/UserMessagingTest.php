@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\User;
 use App\Events\MessageUser;
+use App\Models\User;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->user = User::factory()->hasConversation(1)->create();
 });
 
 // create user
@@ -32,4 +32,5 @@ it('can receive message', function ($message) {
 })->with('messages')
     ->expectsEvents(MessageUser::class);
 
-// messages are stored in database
+// store messages in database
+// test redis working
